@@ -1,7 +1,7 @@
 #+TITLE: Introduction to Clojure
 #+AUTHOR: John Herrlin
-#+DATE: jherrlin@gmail.com
-
+#+EMAIL: jherrlin@gmail.com
+#+DATE: <2021-10-05 Tue>
 
 * Overview
 
@@ -35,8 +35,8 @@
   Clojure is a hosted language and can run on many different platforms.
 
   Here are the most famous ones:
-  - JVM (Java, Scala)
-  - JavaScript (browsers, Node)
+  - JVM (Java, Scala, Kotlin, Groovy)
+  - JavaScript (web browsers, Node)
   - Bash (your GNU/Linux shell)
   - Common Language Runtime (C# and .Net framework, Microsoft)
 
@@ -71,12 +71,15 @@
 
 * Prefix notation
 
-  In Lisp the function is as always in the first position of the list. The rest
-  of the values in the list is the arguments to the function.
+  In Python the function is just before the parentheses.
 
   #+BEGIN_SRC python :results output code
     print("Hey Kodkollektivet!")
   #+END_SRC
+
+  In Lisp the function is just after the first parenthes. The rest of the values
+  within the parentheses is the arguments to the function. This notion is called
+  prefix notation.
 
   #+BEGIN_SRC clojure :results output code
     (print "Hey Kodkollektivet!")
@@ -87,8 +90,10 @@
 * S-expressions
 
   When you write Lisp code you write lists. Lists starts and ends with =(= =)=.
+
   Below is a Lisp expressions that calculcates the sum of 4 numbers. The
-  function used to sum the numbers is the =+= function.
+  function used to add the numbers is the =+= function. The addition function is
+  on the first position in the list, prefix notation.
 
    #+BEGIN_SRC clojure :results output code
         (+ 1 2 3 4)
@@ -103,38 +108,42 @@
    The same code in Python could look like this.
 
    #+BEGIN_SRC python
-     return 1 + 2 + 3 + 4
+     1 + 2 + 3 + 4
    #+END_SRC
 
 * Lists in lists
 
   When you write Clojure programs you write lists and compose them together.
 
-  This is how you could write a "Hello World" like function.
+  This is how you could write a "Hello World" function.
 
   #+BEGIN_SRC clojure :results output code
     (defn say-hi-to [name]
-      (println (str "Hello " name "!")))
+      (print (str "Hello " name "!")))
 
     (say-hi-to "Kodkollektivet")
   #+END_SRC
 
-  This is the structure, after some time you dont see the parenthesis.
-  Here they are removed.
+  If we remove the parenthesis the code would look very much like Python.
+
   #+BEGIN_SRC python :results output code
     defn say-hi-to [name]
-       println str "Hello " name "!"
+      print str "Hello " name "!"
   #+END_SRC
 
+  The parenthesis are in the code to give the structure. You get used to them
+  quickly and then you dont see them any more.
+
 * Interactive development
-  <<interactive-development>>
 
-  Short feedback loop
+  Lisps have the feature of Interactive development and gives the programmare a
+  short feedback loop.
 
-  Reacts hot code reloading ALWAYS, EVERYWHERE!
+  Think of Reacts hot code reloading/fast refresh ALWAYS, EVERYWHERE!
 
-  is a concept where your text editor is tightly coupled with the running
-  environment and you can evaluate code on the fly.
+  Interactive development is a concept where your text editor is tightly coupled
+  with the running environment and you can evaluate code on the fly. You can
+  save state where it fits you and interactivly build your algorithms around it.
 
   #+BEGIN_SRC artist :results output code
     +----------------+       +---------------------+
@@ -144,9 +153,8 @@
     +----------------+       +---------------------+
   #+END_SRC
 
-  The "Running environment" can be a production server, a local JVM or a local
-  web browser.
-  The environment can be either a running JVM or a web browser.
+  The Running environment can be a production server, a local JVM or a web
+  browser.
 
 * Functional programming
 
@@ -154,52 +162,139 @@
   functions do actions the function name is postfixed with an exclamation mark
   (!).
 
-  Action, calculations, data
-  Immutable
-  Stratified design
+  When talking about functional programming there are three concepts that are
+  important.
+
+** Actions, Depend on how many times or when it is run
+
+   Also called:
+   functions with side-effects, side-effecting functions, impure functions
+
+   Examples:
+   Send an email, read from a database
+
+** Calculations, Computations from input to output
+
+   Also called:
+   pure functions, mathematical functions
+
+   Examples:
+   Find the maximum number, check if an email address is valid
+
+** Data, Facts about events
+
+   Examples:
+   The email address a user gave us, the dollar amount read from a bank’s API
 
 * Immutable data structures
 
   All of Clojures data structures are immutable and thread safe.
 
-  #+BEGIN_SRC clojure :results output code
-    (def nr 1)
-    (println nr)
-    (inc nr)
-    (print nr)
-  #+END_SRC
+  This mean that when you have created the, they can't be changed.
 
   #+BEGIN_SRC clojure :results output code
-    (def nr (atom 1))
-    (println @nr)
-    (swap! nr inc)
-    (println @nr)
+    (def nr 1)         ;; Create a global (immutable) variable with value 1
+    (println nr)       ;; Print nr
+    (inc nr)           ;; Increment nr
+    (print nr)         ;; Print it again
+  #+END_SRC
+
+
+  #+BEGIN_SRC clojure :results output code
+    (def nr (atom 1))  ;; Create a global mutable variable with value 1
+    (println @nr)      ;; Print nr
+    (swap! nr inc)     ;; Increment nr
+    (println @nr)      ;; Print nr
   #+END_SRC
 
   Why? Easier to reason about and easier to run in parallel.
 
-  Persistent data structures uses structual sharing (shares memory) to be efficient.
+  Persistent data structures uses structual sharing (shares memory) to be
+  efficient.
 
 * Local variables
+
+  Local variables are only accessible within the =let=.
 
   #+BEGIN_SRC clojure :results output code
     (let [a 10
           b 20]
-      (+ a b))
+      (+ a b) ;; a and b can be used here
+      )
+
+    (+ a b)   ;; a and b can not be used here
   #+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (let ((a 10)
-          (b 20))
-      (+ a b))
+  Example:
+
+  #+BEGIN_SRC clojure :results output code
+    (let [{:keys [movies makers dbs]} incomming-http-request
+          db                          (give-me/datomic dbs)
+          movie-productions           (query :movie-productions movies)
+          movie-makes                 (query :movie-makers makers)]
+      ;; Do something with movie productions and movie makes
+      )
+  #+END_SRC
+
+* Data
+
+  When you programming in Clojure you shuffel, massage and manipulating data
+  back and fourth.
+
+  The most common data structure is the hash map, also called a =map=.
+
+  A =map= have keys and each key has a value.
+
+  #+BEGIN_SRC clojure :results output code
+    {:key "value"}
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :results output code
+    {:first-name "John"
+     :last-name  "Herrlin"
+     :address    {:street "Södra Åreda Källehult"
+                  :zip    35575
+                  :city   "Åryd"}}
+  #+END_SRC
+
+* First class functions
+
+  Functions in Clojure are first class. This is somewhat similar to JavaScript.
+
+  In Clojure we can do:
+  #+BEGIN_SRC clojure :results output code
+    (defn calculate [f n1 n2]
+      (f n1 n2))
+
+    (calculate + 1 2)
+  #+END_SRC
+
+  In JS you can not:
+  #+BEGIN_SRC js :results output code
+    function calculate(f, n1, n2) {
+      return p1 f p2;
+    }
+
+    console.log(calculate(+, 1, 2));
+  #+END_SRC
+
+  But you can:
+  #+BEGIN_SRC js :results output code
+    function add(n1, n2) {
+      return n1 + n2;
+    }
+
+    function calculate(f, n1, n2) {
+        return f(n1, n2);
+    }
+
+    console.log(calculate(add, 1, 2));
   #+END_SRC
 
 * Where is my for loop?
 
-  They are not there! You dont write for loops in most cases, instead you are
-  using =map=, =filter= and =reduce=.
-
-  First class functions
+  They are not there! You dont write for loops, instead you are using =map=,
+  =filter= and =reduce=.
 
   #+BEGIN_SRC clojure :results output code
     (map inc [1 2 3 4 5])
@@ -215,7 +310,8 @@
 * Macros
 
   - Code is data, data is code
-  - Homoiconicity
+  - Homoiconicity, if a program written in it can be manipulated as data using
+    the language itself.
 
   As Clojure code is data you can manipulate the data to fit your needs.
 
