@@ -3,6 +3,7 @@
 #+EMAIL: jherrlin@gmail.com
 #+DATE: <2021-10-05 Tue>
 
+
 * Overview
 
   Clojure is a language within the Lisp family of programming languages. There
@@ -13,11 +14,11 @@
 
   Stackoverflow survey states that Clojure is the [[https://insights.stackoverflow.com/survey/2021#top-paying-technologies][number 1 of the top paying technologies]].
 
-  Clojure is backed by Nubank, the largest financial technology in Latin
-  America. Nubank heavily uses Clojure and Datomic (database).
-
   Rich Hickey is the author of Clojure and have a lot of interesting talks where
-  he presents the ideas and mechanics of Clojure.
+  he presents the ideas and mechanics of Clojure. [[https://www.youtube.com/results?search_query=rich+hickey][Here]] is a list.
+
+  Clojure is backed by the company Nubank, the largest financial technology in
+  Latin America. Nubank heavily uses Clojure and Datomic (database).
 
 * Clojure in Växjö
 
@@ -89,27 +90,56 @@
 
 * S-expressions
 
-  When you write Lisp code you write lists. Lists starts and ends with =(= =)=.
+  When you write Lisp code you write lists. Lists starts and ends with ( ).
+
+  #+BEGIN_SRC clojure :results output code
+    (some-function arg1 arg2 ...)
+  #+END_SRC
 
   Below is a Lisp expressions that calculcates the sum of 4 numbers. The
   function used to add the numbers is the =+= function. The addition function is
   on the first position in the list, prefix notation.
 
-   #+BEGIN_SRC clojure :results output code
-        (+ 1 2 3 4)
-     ;; ^^ ^ ^ ^ ^^
-     ;; || | | | ||- End of the list
-     ;; || | | | |
-     ;; || |------ Arguments
-     ;; ||- Function to use
-     ;; |- Beginning of the list
-   #+END_SRC
+  #+BEGIN_SRC clojure :results output code
+    (+ 1 2 3 4)
+    ;; ^^ ^ ^ ^ ^^
+    ;; || | | | ||- End of the list
+    ;; || | | | |
+    ;; || |------ Arguments
+    ;; ||- Function to use
+    ;; |- Beginning of the list
+  #+END_SRC
 
-   The same code in Python could look like this.
+  The same code in Python could look like this.
 
-   #+BEGIN_SRC python
-     1 + 2 + 3 + 4
-   #+END_SRC
+  #+BEGIN_SRC python :results output code
+    print(1 + 2 + 3 + 4)
+  #+END_SRC
+
+* Expressions
+
+  Every s-expression in Clojure returns something, it may be =nil= but =nil= is
+  something. There is *no statements* in Lisp code, only *expressions*.
+
+  #+BEGIN_SRC js :results output code
+    if (10 % 2 === 0) {
+        evenOrOdd = "Even";
+    }
+    console.log(evenOrOdd);
+  #+END_SRC
+
+  #+BEGIN_SRC js :results output code
+    const foo = if (10 % 2 === 0) {
+        evenOrOdd = "Even";
+    }
+    console.log(evenOrOdd);
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :results output code
+    (if (= (mod 10 2) 0)
+      "Even"
+      "Odd")
+  #+END_SRC
 
 * Lists in lists
 
@@ -126,7 +156,7 @@
 
   If we remove the parenthesis the code would look very much like Python.
 
-  #+BEGIN_SRC python :results output code
+  #+BEGIN_SRC python
     defn say-hi-to [name]
       print str "Hello " name "!"
   #+END_SRC
@@ -165,13 +195,13 @@
   When talking about functional programming there are three concepts that are
   important.
 
-** Actions, Depend on how many times or when it is run
+** Actions,      Depend on when you you run it or how many times
 
    Also called:
    functions with side-effects, side-effecting functions, impure functions
 
    Examples:
-   Send an email, read from a database
+   Send an email, read from a database, write to a database
 
 ** Calculations, Computations from input to output
 
@@ -181,7 +211,7 @@
    Examples:
    Find the maximum number, check if an email address is valid
 
-** Data, Facts about events
+** Data,         Facts about events
 
    Examples:
    The email address a user gave us, the dollar amount read from a bank’s API
@@ -190,21 +220,20 @@
 
   All of Clojures data structures are immutable and thread safe.
 
-  This mean that when you have created the, they can't be changed.
+  This mean that when you have created them, they can't be changed.
 
   #+BEGIN_SRC clojure :results output code
-    (def nr 1)         ;; Create a global (immutable) variable with value 1
-    (println nr)       ;; Print nr
-    (inc nr)           ;; Increment nr
-    (print nr)         ;; Print it again
+    (def nr 1)     ;; Create a global (immutable) variable with value 1
+    (println nr)   ;; Print nr
+    (inc nr)       ;; Increment nr
+    (println nr)
   #+END_SRC
-
 
   #+BEGIN_SRC clojure :results output code
     (def nr (atom 1))  ;; Create a global mutable variable with value 1
     (println @nr)      ;; Print nr
     (swap! nr inc)     ;; Increment nr
-    (println @nr)      ;; Print nr
+    (println @nr)
   #+END_SRC
 
   Why? Easier to reason about and easier to run in parallel.
@@ -221,8 +250,8 @@
           b 20]
       (+ a b) ;; a and b can be used here
       )
-
-    (+ a b)   ;; a and b can not be used here
+    ;; a and b can not be used here
+    (+ a b)
   #+END_SRC
 
   Example:
@@ -333,143 +362,186 @@
 
   https://adventofcode.com/2019/day/1
 
-  #+BEGIN_SRC text :tangle ./input.txt
-    50062
-    118298
-    106698
-    59751
-    59461
-    144411
-    52783
-    118293
-    148025
-    54354
-    95296
-    68478
-    80105
-    76390
-    75768
-    89311
-    117129
-    127515
-    131531
-    127565
-    77249
-    91806
-    123811
-    123508
-    127263
-    61076
-    82153
-    122561
-    89117
-    116790
-    146530
-    66706
-    56549
-    112264
-    139250
-    87331
-    144022
-    142052
-    125519
-    89797
-    85148
-    125388
-    67458
-    116066
-    74346
-    148163
-    55477
-    146163
-    99308
-    95653
-    122175
-    92021
-    146532
-    109749
-    136711
-    102321
-    114221
-    140294
-    116718
-    127416
-    130402
-    52239
-    125181
-    146410
-    126339
-    147221
-    81706
-    80131
-    140909
-    59935
-    71878
-    64434
-    148450
-    73037
-    90890
-    137135
-    85992
-    137381
-    84604
-    62524
-    64133
-    92067
-    124269
-    132039
-    145257
-    107367
-    62143
-    105000
-    62124
-    55929
-    101489
-    94728
-    85982
-    88358
-    83275
-    132648
-    75688
-    109263
-    146400
-    114701
-  #+END_SRC
+  For each mass in the file, take its number, divide by three, round down, and
+  subtract 2. The sum all the masses.
 
-  #+BEGIN_SRC clojure :results output code
-    (ns user
-      (:require [clojure.string :as str]))
+  For example:
+  - For a mass of 12, divide by 3 and round down to get 4, then subtract 2 to get 2.
+  - For a mass of 14, dividing by 3 and rounding down still yields 4, so the fuel required is also 2.
+  - For a mass of 1969, the fuel required is 654.
+  - For a mass of 100756, the fuel required is 33583.
 
+** Puzzel input
 
-    (defn string->number [s]
-      (Integer. s))
+   #+BEGIN_SRC text :tangle ./input.txt
+     50062
+     118298
+     106698
+     59751
+     59461
+     144411
+     52783
+     118293
+     148025
+     54354
+     95296
+     68478
+     80105
+     76390
+     75768
+     89311
+     117129
+     127515
+     131531
+     127565
+     77249
+     91806
+     123811
+     123508
+     127263
+     61076
+     82153
+     122561
+     89117
+     116790
+     146530
+     66706
+     56549
+     112264
+     139250
+     87331
+     144022
+     142052
+     125519
+     89797
+     85148
+     125388
+     67458
+     116066
+     74346
+     148163
+     55477
+     146163
+     99308
+     95653
+     122175
+     92021
+     146532
+     109749
+     136711
+     102321
+     114221
+     140294
+     116718
+     127416
+     130402
+     52239
+     125181
+     146410
+     126339
+     147221
+     81706
+     80131
+     140909
+     59935
+     71878
+     64434
+     148450
+     73037
+     90890
+     137135
+     85992
+     137381
+     84604
+     62524
+     64133
+     92067
+     124269
+     132039
+     145257
+     107367
+     62143
+     105000
+     62124
+     55929
+     101489
+     94728
+     85982
+     88358
+     83275
+     132648
+     75688
+     109263
+     146400
+     114701
+   #+END_SRC
 
-    (comment
-      (string->number "10")
-      )
+** Code
 
-    (defn calculate-fuel [mass]
-      (- (int (/ mass 3)) 2))
+   #+BEGIN_SRC clojure :results output code
+     ;; For each mass in the file, take its number, divide by three, round down, and
+     ;; subtract 2. The sum all the masses.
+     ;;
+     ;; For example:
+     ;; - For a mass of 12, divide by 3 and round down to get 4, then subtract 2 to get 2.
+     ;; - For a mass of 14, dividing by 3 and rounding down still yields 4, so the fuel required is also 2.
+     ;; - For a mass of 1969, the fuel required is 654.
+     ;; - For a mass of 100756, the fuel required is 33583.
+     (ns user
+       (:require [clojure.string :as str]))
+   #+END_SRC
 
-    (comment
-      (calculate-fuel 14)
-      (calculate-fuel 12)
-      (- (int (/ 14 3)) 2)
-      (- (int (/ 12 3)) 2)
-      )
+** Solution
 
-    (defn split-lines [s]
-      (str/split s #"\n"))
+   #+BEGIN_SRC clojure :results output code
+     ;; For each mass in the file, take its number, divide by three, round down, and
+     ;; subtract 2. The sum all the masses.
+     ;;
+     ;; For example:
+     ;; - For a mass of 12, divide by 3 and round down to get 4, then subtract 2 to get 2.
+     ;; - For a mass of 14, dividing by 3 and rounding down still yields 4, so the fuel required is also 2.
+     ;; - For a mass of 1969, the fuel required is 654.
+     ;; - For a mass of 100756, the fuel required is 33583.
+     (ns user
+       (:require [clojure.string :as str]))
 
-    (apply +
-           (map calculate-fuel
-                (map string->number
-                     (str/split (slurp "./input.txt") #"\n"))))
-    ;; => 3425624
+     (defn string->number [s]
+       (Integer. s))
 
-    (->> (slurp "./input.txt")
-         (split-lines)
-         (map string->number)
-         (map calculate-fuel)
-         (apply +));; => 3425624
-  #+END_SRC
+     (defn split-string-by-newline [s]
+       (str/split s #"\n"))
+
+     (defn calculate-fuel [mass]
+       (- (int (/ mass 3)) 2))
+
+     ;; Examples
+     (- (int (/ 12 3)) 2)     ;; => 2
+     (- (int (/ 14 3)) 2)     ;; => 2
+     (- (int (/ 1969 3)) 2)   ;; => 654
+     (- (int (/ 100756 3)) 2) ;; => 33583
+
+     ;; Example 1
+     (reduce
+      (fn [sum mass]
+        (+ sum (calculate-fuel mass)))
+      0
+      (map
+       (fn [s] (string->number s))
+       (split-string-by-newline
+        (slurp "./input.txt"))))
+
+     ;; Example 2
+     ((comp
+       #(apply + %)
+       #(map calculate-fuel %)
+       #(map string->number %)
+       split-string-by-newline)
+      (slurp "./input.txt"))
+
+     ;; Example 3
+     (->> (slurp "./input.txt")
+          (split-string-by-newline)
+          (map string->number)
+          (map calculate-fuel)
+          (apply +))
+   #+END_SRC
