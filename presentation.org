@@ -4,18 +4,33 @@
 #+DATE: <2021-10-05 Tue>
 
 
+* Me
+
+  John Herrlin
+
+  @jherrlin
+
+  User of Emacs and the GNU system.
+
+  Link to the presentation:
+  https://github.com/jherrlin/clojure-presentation
+
 * Overview
 
   Clojure is a language within the Lisp family of programming languages. There
   are many other languages in the Lisp family. For example Common Lisp, Racket,
   Guile and Emacs Lisp.
 
+
   Lisp was born in 1958 at MIT and is one of the oldest programming languages.
+
 
   Stackoverflow survey states that Clojure is the [[https://insights.stackoverflow.com/survey/2021#top-paying-technologies][number 1 of the top paying technologies]].
 
+
   Rich Hickey is the author of Clojure and have a lot of interesting talks where
   he presents the ideas and mechanics of Clojure. [[https://www.youtube.com/results?search_query=rich+hickey][Here]] is a list.
+
 
   Clojure is backed by the company Nubank, the largest financial technology in
   Latin America. Nubank heavily uses Clojure and Datomic (database).
@@ -30,6 +45,7 @@
   - HRM
   - Readly
   - Gears of Leo
+
 
 * Hosted language
 
@@ -70,38 +86,42 @@
   This can make the learning curve steap as you need to know what you need and
   how to compose the libraries together to fit your need.
 
-* Prefix notation
+* Lisp and the prefix notation
 
-  In Python the function is just before the parentheses.
+  In Python the function is just before the first parenthes.
 
   #+BEGIN_SRC python :results output code
     print("Hey Kodkollektivet!")
   #+END_SRC
 
-  In Lisp the function is just after the first parenthes. The rest of the values
-  within the parentheses is the arguments to the function. This notion is called
-  prefix notation.
+  In Lisp the function is just after the first parenthes.
 
   #+BEGIN_SRC clojure :results output code
     (print "Hey Kodkollektivet!")
   #+END_SRC
 
-  Now you know Lisp! ;)
+  The rest of the values within the parentheses is the arguments to the
+  function. This notion is called prefix notation.
+
+  #+BEGIN_SRC clojure :results output code
+    (some-function arg1 arg2 arg3 ...)
+  #+END_SRC
+
+  Now you know Lisp!
+
+  Thank you for listening! ;)
 
 * S-expressions
 
-  When you write Lisp code you write lists. Lists starts and ends with ( ).
-
-  #+BEGIN_SRC clojure :results output code
-    (some-function arg1 arg2 ...)
-  #+END_SRC
+  Lisp is a shortening for LISt Processing. And when you write Lisp code you
+  write lists (yes, actual data structures). Lists starts and ends with ( ).
 
   Below is a Lisp expressions that calculcates the sum of 4 numbers. The
   function used to add the numbers is the =+= function. The addition function is
   on the first position in the list, prefix notation.
 
   #+BEGIN_SRC clojure :results output code
-    (+ 1 2 3 4)
+       (+ 1 2 3 4)
     ;; ^^ ^ ^ ^ ^^
     ;; || | | | ||- End of the list
     ;; || | | | |
@@ -116,7 +136,7 @@
     print(1 + 2 + 3 + 4)
   #+END_SRC
 
-* Expressions
+* Expressions                                                      :noexport:
 
   Every s-expression in Clojure returns something, it may be =nil= but =nil= is
   something. There is *no statements* in Lisp code, only *expressions*.
@@ -144,6 +164,26 @@
 * Lists in lists
 
   When you write Clojure programs you write lists and compose them together.
+
+  #+BEGIN_SRC clojure :results output code
+    (+ 1 2 3 (+ 4 5))
+  #+END_SRC
+
+  [[./clojure-presentation-s-expressions.drawio.png]]
+
+* Lists in lists
+
+  More nested lists in lists.
+
+  #+BEGIN_SRC clojure :results output code
+    (+ 1 2 3
+       (+ 4
+          (- 4 4)))
+  #+END_SRC
+
+  [[./clojure-presentation-s-expressions-more.drawio.png]]
+
+* Define a function
 
   This is how you could write a "Hello World" function.
 
@@ -238,10 +278,10 @@
 
   Why? Easier to reason about and easier to run in parallel.
 
-  Persistent data structures uses structual sharing (shares memory) to be
-  efficient.
+  Persistent data structures uses structual sharing (shares memory) to
+  be efficient so memory cost is not that much bigger.
 
-* Local variables
+* Local variables                                                  :noexport:
 
   Local variables are only accessible within the =let=.
 
@@ -292,8 +332,8 @@
 
   In Clojure we can do:
   #+BEGIN_SRC clojure :results output code
-    (defn calculate [f n1 n2]
-      (f n1 n2))
+    (defn calculate [function n1 n2]
+      (function n1 n2))
 
     (calculate + 1 2)
   #+END_SRC
