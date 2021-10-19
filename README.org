@@ -585,3 +585,9 @@
           (map calculate-fuel)
           (apply +))
    #+END_SRC
+
+* Resources
+
+  - https://clojure.org/
+  - https://adambard.com/blog/clojure-in-15-minutes/
+  - https://www.braveclojure.com/
