@@ -398,6 +398,10 @@
     (backwards (" backwards" " am" "I" str))
   #+END_SRC
 
+
+
+  Example taken from [[https://www.braveclojure.com/writing-macros/][braveclojure]].
+
 * DEMO Advent of code, Day 1 2019
 
   https://adventofcode.com/2019/day/1
