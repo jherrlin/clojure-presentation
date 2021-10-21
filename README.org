@@ -17,6 +17,7 @@
 
 * Overview
 
+
   Clojure is a language within the Lisp family of programming languages. There
   are many other languages in the Lisp family. For example Common Lisp, Racket,
   Guile and Emacs Lisp.
@@ -46,7 +47,6 @@
   - Readly
   - Gears of Leo
 
-
 * Hosted language
 
   Clojure is a hosted language and can run on many different platforms.
@@ -71,17 +71,17 @@
   The Unix philosophy states that libraries/programs should do one thing and do
   it well.
 
+  You often find libraries on GitHub that is "old" and they havent been active
+  for a while and in the beginning I thought they were not maintained and
+  outdated. Instead they are often "done", they solve a specific problem and
+  should not do anything more.
+
   This means that it's not common with framework's in Clojure. Instead you
   compose libraries together to create what you want.
 
   If you are building a web application. You may need a HTTP server, that's one
   lib. If you need routing that's another. If you need websockets that's another
   lib and so on.
-
-  You often find libraries on GitHub that is "old" and they havent been active
-  for a while and in the beginning I thought they were not maintained and
-  outdated. Instead they are often "done", they solve a specific problem and
-  should not do anything more.
 
   This can make the learning curve steap as you need to know what you need and
   how to compose the libraries together to fit your need.
@@ -92,10 +92,26 @@
   - finite number of ordered values
 
 
-  #+BEGIN_SRC artist :results output code
+  #+BEGIN_SRC artist
+
     +---+   +---+   +---+   +---+
     | 1 |---| 2 |---| 3 |---| 4 |
     +---+   +---+   +---+   +---+
+
+  #+END_SRC
+
+* List data structure
+
+
+  - a value can be a list
+
+
+  #+BEGIN_SRC artist
+    +---+   +---+   +---+   +------------------+
+    |   |   |   |   |   |   |+-+  +-+  +-+  +-+|
+    | 1 |---| 2 |---| 3 |---||1|--|2|--|3|--|4||
+    |   |   |   |   |   |   |+-+  +-+  +-+  +-+|
+    +---+   +---+   +---+   +------------------+
   #+END_SRC
 
 * Lisp and the prefix notation
@@ -119,14 +135,14 @@
     (some-function arg1 arg2 arg3 ...)
   #+END_SRC
 
-  Now you know Lisp!
+  Now you know everything about Lisp!
 
   Thank you for listening! ;)
 
 * S-expressions
 
   Lisp is a shortening for LISt Processing. And when you write Lisp code you
-  write lists (yes, actual data structures). Lists starts and ends with ( ).
+  write lists (yes, actual data structures). Lists starts and ends with (1 2 3 4).
 
   Below is a Lisp expressions that calculcates the sum of 4 numbers. The
   function used to add the numbers is the =+= function. The addition function is
@@ -216,33 +232,11 @@
   The parenthesis are in the code to give the structure. You get used to them
   quickly and then you dont see them any more.
 
-* Interactive development
-
-  Lisps have the feature of Interactive development and gives the programmare a
-  short feedback loop.
-
-  Think of Reacts hot code reloading/fast refresh ALWAYS, EVERYWHERE!
-
-  Interactive development is a concept where your text editor is tightly coupled
-  with the running environment and you can evaluate code on the fly. You can
-  save state where it fits you and interactivly build your algorithms around it.
-
-  #+BEGIN_SRC artist :results output code
-    +----------------+       +---------------------+
-    |                |       |                     |
-    |  Text editor   |<----->| Running environment |
-    |                |       |                     |
-    +----------------+       +---------------------+
-  #+END_SRC
-
-  The Running environment can be a production server, a local JVM or a web
-  browser.
-
 * Functional programming
 
-  Clojure is not a pure functional language and you are able to do actions. When
-  functions do actions the function name is postfixed with an exclamation mark
-  (!).
+  Clojure is not a pure functional language and you are able to do
+  actions. When functions do actions there is a shared notion that a
+  function name is postfixed with an exclamation mark (!).
 
   When talking about functional programming there are three concepts that are
   important.
@@ -270,9 +264,10 @@
 
 * Immutable data structures
 
-  All of Clojures data structures are immutable and thread safe.
+  Almost all of Clojures data structures are immutable and thread safe.
 
   This mean that when you have created them, they can't be changed.
+
 
   #+BEGIN_SRC clojure :results output code
     (def nr 1)     ;; Create a global (immutable) variable with value 1
@@ -281,6 +276,7 @@
     (println nr)
   #+END_SRC
 
+
   #+BEGIN_SRC clojure :results output code
     (def nr (atom 1))  ;; Create a global mutable variable with value 1
     (println @nr)      ;; Print nr
@@ -288,7 +284,7 @@
     (println @nr)
   #+END_SRC
 
-  Why? Easier to reason about and easier to run in parallel.
+  Why? Easier to reason about, they wont change and easier to run in parallel.
 
   Persistent data structures uses structual sharing (shares memory) to
   be efficient so memory cost is not that much bigger.
@@ -322,15 +318,17 @@
   When you programming in Clojure you shuffel, massage and manipulating data
   back and fourth.
 
-  The most common data structure is the hash map, also called a =map=.
+  The most common data structure is the hash map.
 
-  A =map= have keys and each key has a value.
+  A hash map have keys and each key has a value.
 
-  #+BEGIN_SRC clojure :results output code
+
+  #+BEGIN_SRC clojure
     {:key "value"}
   #+END_SRC
 
-  #+BEGIN_SRC clojure :results output code
+
+  #+BEGIN_SRC clojure
     {:first-name "John"
      :last-name  "Herrlin"
      :address    {:street "Södra Åreda Källehult"
@@ -342,13 +340,17 @@
 
   Functions in Clojure are first class. This is somewhat similar to JavaScript.
 
-  In Clojure we can do:
+
   #+BEGIN_SRC clojure :results output code
     (defn calculate [function n1 n2]
       (function n1 n2))
 
-    (calculate + 1 2)
+    (println (calculate + 1 2))
+    (println (calculate * 2 2))
   #+END_SRC
+
+
+* First class functions and JavaScript                             :noexport:
 
   In JS you can not:
   #+BEGIN_SRC js :results output code
@@ -374,8 +376,9 @@
 
 * Where is my for loop?
 
-  They are not there! You dont write for loops, instead you are using =map=,
-  =filter= and =reduce=.
+
+  They are not there! You dont write for loops, instead you are using =map=, =filter= and =reduce=.
+
 
   #+BEGIN_SRC clojure :results output code
     (map inc [1 2 3 4 5])
@@ -398,9 +401,11 @@
 
   Say that you wanna use Postfix notations instead of Prefix.
 
+
   #+BEGIN_SRC clojure :results output code
     (" backwards" " am" "I" str)
   #+END_SRC
+
 
   #+BEGIN_SRC clojure :results output code
     (defmacro backwards
@@ -414,16 +419,42 @@
 
   Example taken from [[https://www.braveclojure.com/writing-macros/][braveclojure]].
 
+* Interactive development
+
+
+  Lisps have the feature of Interactive development and gives the programmer a
+  short feedback loop.
+
+
+  Interactive development is a concept where your text editor is tightly coupled
+  with the running environment and you can evaluate code on the fly. You can
+  save state where it fits you and interactivly build your algorithms from that state.
+
+
+  #+BEGIN_SRC artist :results output code
+    +----------------+       +---------------------+
+    |                |       |                     |
+    |  Text editor   |<----->| Running environment |
+    |                |       |                     |
+    +----------------+       +---------------------+
+  #+END_SRC
+
+
+  The Running environment can be a production server, a local JVM or a web browser.
+
 * DEMO Advent of code, Day 1 2019
 
+
   https://adventofcode.com/2019/day/1
+
 
   For each mass in the file, take its number, divide by three, round down, and
   subtract 2. The sum all the masses.
 
+
   For example:
   - For a mass of 12, divide by 3 and round down to get 4, then subtract 2 to get 2.
-  - For a mass of 14, dividing by 3 and rounding down still yields 4, so the fuel required is also 2.
+  - For a mass of 14, dividing by 3 and rounding down still yields 4 and subtract 2, so the fuel required is also 2.
   - For a mass of 1969, the fuel required is 654.
   - For a mass of 100756, the fuel required is 33583.
 
@@ -545,6 +576,7 @@
      ;; - For a mass of 100756, the fuel required is 33583.
      (ns user
        (:require [clojure.string :as str]))
+
    #+END_SRC
 
 ** Solution
