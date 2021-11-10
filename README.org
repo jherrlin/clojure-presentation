@@ -6,6 +6,10 @@
 
 * Warning!
 
+  #+BEGIN_SRC shell :results output code
+    convert clojure-meme.jpg -resize 512x512 clojure-meme-resized.jpg
+  #+END_SRC
+
   [[./clojure-meme.jpg]]
 
 * Me
