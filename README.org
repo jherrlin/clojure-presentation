@@ -4,6 +4,10 @@
 #+DATE: <2021-10-05 Tue>
 
 
+* Warning!
+
+  [[./clojure-meme.jpg]]
+
 * Me
 
   John Herrlin
